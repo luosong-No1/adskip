@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">广告跳过</string>
+    <string name="app_slogan">基于系统无障碍服务，本机识别并自动点击「跳过 / 关闭广告」</string>
+
+    <!-- 无障碍服务在系统设置里的展示文案 -->
+    <string name="accessibility_service_label">广告跳过</string>
+    <string name="accessibility_service_summary">自动点击开屏广告与弹窗广告的「跳过 / 关闭」按钮</string>
+    <string name="accessibility_service_description">开启后，本服务会读取当前屏幕上的界面控件，识别其中的「跳过」「跳过广告」「关闭广告」等按钮并自动点击。所有识别都在手机本地完成，不联网、不收集、不上传任何内容。</string>
+
+    <!-- 状态区 -->
+    <string name="status_title">服务状态</string>
+    <string name="status_running">已连接，正在工作</string>
+    <string name="status_enabled_not_connected">系统已启用，等待系统连接（切到别的 App 试一下）</string>
+    <string name="status_off">未开启</string>
+    <string name="status_hint_off">点下面的按钮，在「已下载的服务 / 已安装的服务」里找到「广告跳过」并打开开关。</string>
+    <string name="status_hint_on">想临时停用请用下面的一号开关；彻底关闭请去系统无障碍设置。</string>
+    <string name="action_open_a11y">去开启无障碍服务</string>
+    <string name="action_open_a11y_on">打开系统无障碍设置</string>
+    <string name="toast_no_settings">无法自动打开无障碍设置，请手动进入：设置 → 无障碍</string>
+    <string name="toast_invalid_packages">已忽略 %1$d 个无效包名（需形如 com.example.app）</string>
+    <string name="toast_loose_on">宽松模式已开启：普通对话框的关闭按钮也可能被点掉</string>
+
+    <!-- 开关区 -->
+    <string name="section_switch">识别规则</string>
+    <string name="sw_master">总开关</string>
+    <string name="sw_master_desc">关闭后不做任何识别与点击</string>
+    <string name="sw_skip">开屏广告「跳过」</string>
+    <string name="sw_skip_desc">识别「跳过 / 跳过广告 / 跳过 3s / Skip」等。风险最低，建议常开。</string>
+    <string name="sw_close_ad">广告「关闭」按钮</string>
+    <string name="sw_close_ad_desc">识别「关闭广告 / 不感兴趣」以及 ad_close、iv_close 这类广告关闭控件 id。</string>
+    <string name="sw_x_close">单个 × / ✕ 关闭按钮</string>
+    <string name="sw_x_close_desc">只点「可点击、面积很小、位于角落」的单个叉号，用于应用内弹窗广告。</string>
+    <string name="sw_loose_close">宽松模式：任意「关闭 / Close」</string>
+    <string name="sw_loose_close_desc">默认关闭。会把普通对话框的关闭按钮也点掉，容易误伤，确认需要再开。</string>
+
+    <!-- 排除列表 -->
+    <string name="section_exclude">排除的应用</string>
+    <string name="exclude_desc">每行一个包名，也可以用逗号分隔。这些应用内不做任何点击。\n查看包名：应用信息页拉到底，或用任意「包名查看器」。</string>
+    <string name="exclude_hint">com.example.someapp\ncom.example.another</string>
+    <string name="action_save">保存</string>
+    <string name="toast_saved">已保存</string>
+    <string name="builtin_exclude_title">内置保护名单（不可删除）</string>
+    <string name="builtin_exclude_desc">系统界面、设置、权限控制器、桌面启动器、输入法、电话短信，以及主流银行与支付类应用，永远不点击。</string>
+
+    <!-- 日志 -->
+    <string name="section_log">最近跳过记录</string>
+    <string name="log_empty">暂无记录。开启服务后去打开一个有开屏广告的 App 试试。</string>
+    <string name="action_clear_log">清空记录</string>
+    <string name="toast_cleared">已清空</string>
+
+    <!-- 安全说明 -->
+    <string name="section_safety">安全护栏</string>
+    <string name="safety_body">· 遇到「取消 / 确定 / 支付 / 购买 / 同意 / 允许 / 下载 / 删除 / 退出」等词一律不点\n· 每次点击后 0.7 秒内不重复点击，每分钟最多 25 次\n· 同一个目标 1.5 秒内只点一次，避免连点\n· 内置名单里的系统与支付类应用完全不介入</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  flagReportViewIds            -> 能读到 viewIdResourceName，这是识别广告控件最准的特征
+  flagIncludeNotImportantViews -> 广告 SDK 常把控件标成 importantForAccessibility=no，
+                                  不加这个 flag 会漏掉大量"跳过"按钮
+  flagRetrieveInteractiveWindows -> 能拿到所有窗口（含弹窗、悬浮层）
+  canPerformGestures           -> 允许用 dispatchGesture 模拟点击，兜底那些
+                                  "文本可见但控件不可点击"的开屏广告
+  isAccessibilityTool=true     -> 声明为无障碍工具。作用：在 Android 14+ 上可以读取被
+                                  标记为 accessibilityDataSensitive 的界面内容，
+                                  否则部分弹窗会读不到。代价见 README 的"声明取舍"一节。
+-->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeWindowsChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault|flagReportViewIds|flagIncludeNotImportantViews|flagRetrieveInteractiveWindows"
+    android:canPerformGestures="true"
+    android:canRetrieveWindowContent="true"
+    android:description="@string/accessibility_service_description"
+    android:isAccessibilityTool="true"
+    android:notificationTimeout="100"
+    android:settingsActivity="com.adskip.MainActivity"
+    android:summary="@string/accessibility_service_summary" />

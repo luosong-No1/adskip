@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AdSkip</string>
+    <string name="app_slogan">Uses the system Accessibility Service to find and tap “Skip / Close ad” on your device.</string>
+
+    <string name="accessibility_service_label">AdSkip</string>
+    <string name="accessibility_service_summary">Automatically tap “Skip / Close” on splash and pop-up ads</string>
+    <string name="accessibility_service_description">When enabled, this service reads the on-screen view hierarchy, looks for buttons such as “Skip”, “Skip ad”, “Close ad” and taps them. All matching happens locally on your device. No network access, no data collection, no uploads.</string>
+
+    <string name="status_title">Service status</string>
+    <string name="status_running">Connected and working</string>
+    <string name="status_enabled_not_connected">Enabled in system settings, waiting for the system to connect (switch to another app to trigger it)</string>
+    <string name="status_off">Not enabled</string>
+    <string name="status_hint_off">Tap the button below, then find “AdSkip” under “Downloaded services / Installed services” and turn it on.</string>
+    <string name="status_hint_on">Use the master switch below to pause temporarily; disable it in system accessibility settings to stop it completely.</string>
+    <string name="action_open_a11y">Open accessibility settings</string>
+    <string name="action_open_a11y_on">Open system accessibility settings</string>
+    <string name="toast_no_settings">Could not open accessibility settings automatically. Go to Settings → Accessibility.</string>
+    <string name="toast_invalid_packages">Ignored %1$d invalid package name(s)</string>
+    <string name="toast_loose_on">Loose mode on: ordinary dialog close buttons may also be tapped</string>
+
+    <string name="section_switch">Detection rules</string>
+    <string name="sw_master">Master switch</string>
+    <string name="sw_master_desc">When off, nothing is detected or tapped</string>
+    <string name="sw_skip">Splash ad “Skip”</string>
+    <string name="sw_skip_desc">Matches “Skip”, “Skip ad”, “Skip 3s”, “跳过”. Lowest risk, recommended.</string>
+    <string name="sw_close_ad">Ad “Close” button</string>
+    <string name="sw_close_ad_desc">Matches “Close ad”, “Not interested”, and ids like ad_close / iv_close.</string>
+    <string name="sw_x_close">Single × / ✕ close button</string>
+    <string name="sw_x_close_desc">Only taps small, clickable, corner-positioned single crosses — for in-app pop-up ads.</string>
+    <string name="sw_loose_close">Loose mode: any “Close”</string>
+    <string name="sw_loose_close_desc">Off by default. Also taps ordinary dialog close buttons, so it may over-click.</string>
+
+    <string name="section_exclude">Excluded apps</string>
+    <string name="exclude_desc">One package name per line, commas also work. Nothing is ever tapped inside these apps.</string>
+    <string name="exclude_hint">com.example.someapp\ncom.example.another</string>
+    <string name="action_save">Save</string>
+    <string name="toast_saved">Saved</string>
+    <string name="builtin_exclude_title">Built-in protected list (cannot be removed)</string>
+    <string name="builtin_exclude_desc">System UI, Settings, permission controller, launchers, keyboards, phone / messaging, and major banking / payment apps are never touched.</string>
+
+    <string name="section_log">Recent skips</string>
+    <string name="log_empty">No records yet. Enable the service and open an app with a splash ad.</string>
+    <string name="action_clear_log">Clear records</string>
+    <string name="toast_cleared">Cleared</string>
+
+    <string name="section_safety">Safety guards</string>
+    <string name="safety_body">· Never taps words like Cancel / OK / Pay / Buy / Agree / Allow / Download / Delete / Sign out\n· 0.7 s cooldown per tap, max 25 taps per minute\n· The same target is tapped at most once per 1.5 s\n· Built-in list of system and payment apps is left completely alone</string>
+</resources>
