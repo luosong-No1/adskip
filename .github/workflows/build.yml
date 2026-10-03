@@ -1,0 +1,114 @@
+name: Build APK
+
+# 推到 GitHub 后自动编译出可安装的 debug APK，到 Actions 页面下载 Artifact 即可。
+# 无需在本机安装 JDK / Android SDK / Android Studio。
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: assembleDebug
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          # 显式指定版本，这样不依赖仓库里的 gradle-wrapper.jar
+          gradle-version: '8.7'
+
+      - name: Verify Gradle CLI is on PATH
+        run: |
+          # setup-gradle 正常会把 gradle 命令加进 PATH；万一没有，这里自己下载一份，
+          # 保证后面的构建步骤一定能跑起来。
+          if command -v gradle >/dev/null 2>&1; then
+            gradle --version
+          else
+            echo "未找到 gradle 命令，改为手动下载 Gradle 8.7"
+            curl -fsSL -o "$RUNNER_TEMP/gradle.zip" \
+              https://services.gradle.org/distributions/gradle-8.7-bin.zip
+            unzip -q "$RUNNER_TEMP/gradle.zip" -d "$RUNNER_TEMP"
+            echo "$RUNNER_TEMP/gradle-8.7/bin" >> "$GITHUB_PATH"
+            "$RUNNER_TEMP/gradle-8.7/bin/gradle" --version
+          fi
+
+      - name: Locate Gradle project root
+        id: proj
+        run: |
+          set -e
+          if [ -f settings.gradle.kts ] || [ -f settings.gradle ]; then
+            echo "dir=." >> "$GITHUB_OUTPUT"
+          elif [ -f adskip/settings.gradle.kts ]; then
+            echo "dir=adskip" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::找不到 Gradle 工程根目录（缺少 settings.gradle.kts）"
+            exit 1
+          fi
+
+      - name: Show Android SDK info
+        run: |
+          # ubuntu-latest 的 runner 镜像自带 Android SDK，这里只做诊断输出，
+          # 万一将来镜像变了导致构建失败，看这段日志就能定位。
+          echo "ANDROID_HOME=${ANDROID_HOME:-<unset>}"
+          echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-<unset>}"
+          ls "${ANDROID_HOME:-/usr/local/lib/android/sdk}/platforms" || true
+
+      - name: Run unit tests and build debug APK
+        working-directory: ${{ steps.proj.outputs.dir }}
+        run: gradle testDebugUnitTest assembleDebug --no-daemon --stacktrace
+
+      - name: Upload unit test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: ${{ steps.proj.outputs.dir }}/app/build/reports/tests/testDebugUnitTest/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Show output
+        working-directory: ${{ steps.proj.outputs.dir }}
+        run: ls -lh app/build/outputs/apk/debug/
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AdSkip-debug-apk
+          path: ${{ steps.proj.outputs.dir }}/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Write job summary
+        working-directory: ${{ steps.proj.outputs.dir }}
+        run: |
+          {
+            echo "## 构建成功 ✅"
+            echo
+            echo "在页面下方的 **Artifacts** 区域下载 \`AdSkip-debug-apk\`，解压得到 APK。"
+            echo
+            echo '```'
+            ls -lh app/build/outputs/apk/debug/
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
